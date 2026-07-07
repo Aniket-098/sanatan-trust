@@ -1,0 +1,19 @@
+# Node Modules
+node_modules
+client/node_modules
+server/node_modules
+
+# Environment Variables
+.env
+server/.env
+client/.env
+
+# Build folders
+dist
+client/dist
+
+# VS Code
+.vscode
+
+# macOS
+.DS_Store
