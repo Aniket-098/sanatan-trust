@@ -4,21 +4,19 @@ import toast from "react-hot-toast";
 import { createDonationOrder, verifyDonation } from "../../api/donateApi";
 import { useNavigate } from "react-router-dom";
 
+import PaymentMethods from "./PaymentMethods";
+import DonationSummary from "./DonationSummary";
 import AmountSelector from "./AmountSelector";
 
-const DonationForm = ({ defaultAmount }) => {
+const DonationForm = ({
+  formData,
+  setFormData,
+  selectedAmount,
+  setSelectedAmount,
+}) => {
   const navigate = useNavigate();
 
-  const [selectedAmount, setSelectedAmount] = useState(defaultAmount);
-
   const [customAmount, setCustomAmount] = useState("");
-
-  const [formData, setFormData] = useState({
-    donorName: "",
-    email: "",
-    phone: "",
-    purpose: "",
-  });
 
   const [errors, setErrors] = useState({});
 
@@ -65,16 +63,8 @@ const DonationForm = ({ defaultAmount }) => {
 
     if (selectedAmount < 10) {
       toast.error("Minimum donation amount is ₹10.");
-
       return;
     }
-
-    if (selectedAmount > 100000) {
-  toast.error(
-    "Maximum donation amount is ₹1,00,000."
-  );
-  return;
-}
 
     try {
       const { data } = await createDonationOrder(selectedAmount);
@@ -108,10 +98,6 @@ const DonationForm = ({ defaultAmount }) => {
           },
         },
 
-        payment: {
-          capture: "automatic",
-        },
-
         handler: async function (response) {
           try {
             const { data } = await verifyDonation({
@@ -131,6 +117,7 @@ const DonationForm = ({ defaultAmount }) => {
 
               amount: selectedAmount,
             });
+
             navigate("/donation-success", {
               replace: true,
               state: {
@@ -148,8 +135,9 @@ const DonationForm = ({ defaultAmount }) => {
       const razorpay = new window.Razorpay(options);
 
       razorpay.on("payment.failed", function (response) {
-        console.log("Payment Failed");
-        console.log(response.error);
+        console.error(response.error);
+
+        toast.error("Payment failed.");
       });
 
       razorpay.open();
@@ -166,8 +154,11 @@ const DonationForm = ({ defaultAmount }) => {
         rounded-3xl
         border
         border-yellow-600/30
-        bg-[#2B1E14]
+        bg-gradient-to-br
+        from-[#2B1E14]
+        to-[#1A120B]
         p-8
+        shadow-2xl
       "
     >
       {/* Header */}
@@ -195,6 +186,9 @@ const DonationForm = ({ defaultAmount }) => {
 
         <p className="mt-2 text-gray-400">
           Every contribution makes a difference.
+        </p>
+        <p className="mt-4 text-sm text-yellow-400">
+          Secure • Transparent • Trusted
         </p>
       </div>
 
@@ -331,64 +325,11 @@ const DonationForm = ({ defaultAmount }) => {
 
       {/* Donation Summary */}
 
-      <div
-        className="
-          mt-8
-          rounded-2xl
-          border
-          border-yellow-600/30
-          bg-[#1E140D]
-          p-6
-        "
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-wider text-gray-400">
-              Donation Amount
-            </p>
-
-            <p className="mt-2 text-sm text-gray-500">
-              You are about to contribute
-            </p>
-          </div>
-
-          <span className="text-4xl font-bold text-yellow-400">
-            ₹ {selectedAmount.toLocaleString("en-IN")}
-          </span>
-        </div>
-
-        <p className="mt-5 text-sm leading-7 text-gray-400">
-          100% of your contribution supports the charitable, educational and
-          spiritual activities of
-          <span className="font-medium text-yellow-400"> Sanatan Trust</span>.
-        </p>
-      </div>
+      <DonationSummary amount={selectedAmount} />
 
       {/* Donate Button */}
 
-      <button
-        onClick={handleDonate}
-        type="button"
-        className="
-          mt-10
-          w-full
-          rounded-xl
-          bg-gradient-to-r
-          from-yellow-500
-          to-orange-500
-          py-4
-          text-lg
-          font-bold
-          text-black
-          transition-all
-          duration-300
-          hover:scale-[1.02]
-          hover:shadow-lg
-          hover:shadow-orange-500/30
-        "
-      >
-        ❤️ Donate ₹ {selectedAmount.toLocaleString("en-IN")}
-      </button>
+      <PaymentMethods onDonate={handleDonate} />
 
       <p className="mt-5 text-center text-sm text-gray-400">
         🔒 Secured by Razorpay

@@ -1,98 +1,131 @@
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import DonationHero from "../components/donate/DonationHero";
+import DonationCauses from "../components/donate/DonationCauses";
+import TrustSection from "../components/donate/TrustSection";
+import ImpactStats from "../components/donate/ImpactStats";
+import DonationQuote from "../components/donate/DonationQuote";
+import DonationFAQ from "../components/donate/DonationFAQ";
 import DonationForm from "../components/donate/DonationForm";
+import WhyDonate from "../components/donate/WhyDonate";
 
 const Donate = () => {
   const [searchParams] = useSearchParams();
 
   const amount = Number(searchParams.get("amount")) || 501;
 
+  const [selectedAmount, setSelectedAmount] = useState(amount);
+
+  const [formData, setFormData] = useState({
+    donorName: "",
+    email: "",
+    phone: "",
+    purpose: "",
+  });
+
   return (
-    <div className="min-h-screen bg-[#140A05] pt-32 pb-20">
-      <div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-2">
-        {/* Left */}
+    <div
+      className="
+        relative
+        overflow-hidden
+        bg-gradient-to-b
+        from-[#120802]
+        via-[#1A120B]
+        to-[#120802]
+      "
+    >
+      {/* Background Glow */}
 
-        <div>
-          <h1 className="text-5xl font-bold text-yellow-500">
-            Support Our Mission
-          </h1>
+      <div
+        className="
+          absolute
+          left-1/2
+          top-32
+          h-[800px]
+          w-[800px]
+          -translate-x-1/2
+          rounded-full
+          bg-yellow-500/10
+          blur-[220px]
+        "
+      />
 
-          <p className="mt-8 text-lg leading-9 text-gray-300">
-            Your generosity helps preserve Sanatan Dharma, serve society,
-            organize Kathas, support Annadan Seva, and continue spiritual and
-            charitable activities for future generations.
-          </p>
+      <div className="relative z-10">
 
-          <div className="mt-12 space-y-6">
-            <div
-              className="
-      rounded-2xl
-      bg-[#2B1E14]
-      p-6
-      transition-all
-      duration-300
-      hover:-translate-y-1
-      hover:border-yellow-500/30
-    "
-            >
-              <h3 className="text-xl font-semibold text-yellow-400">
-                ❤️ Why Donate?
-              </h3>
+        {/* Hero */}
 
-              <p className="mt-3 leading-7 text-gray-300">
-                Every donation directly supports religious, educational and
-                charitable activities conducted by the trust.
-              </p>
-            </div>
+        <section className="px-6 pb-10 pt-36">
 
-            <div
-              className="
-      rounded-2xl
-      bg-[#2B1E14]
-      p-6
-      transition-all
-      duration-300
-      hover:-translate-y-1
-      hover:border-yellow-500/30
-    "
-            >
-              <h3 className="text-xl font-semibold text-yellow-400">
-                🛕 Transparent Contributions
-              </h3>
+          <div className="mx-auto max-w-7xl">
 
-              <p className="mt-3 leading-7 text-gray-300">
-                Every contribution is utilized responsibly to organize Kathas,
-                Annadan Seva, temple development and spiritual education.
-              </p>
-            </div>
+            <DonationHero />
 
-            <div
-              className="
-      rounded-2xl
-      bg-[#2B1E14]
-      p-6
-      transition-all
-      duration-300
-      hover:-translate-y-1
-      hover:border-yellow-500/30
-    "
-            >
-              <h3 className="text-xl font-semibold text-yellow-400">
-                🔒 Secure Payments
-              </h3>
-
-              <p className="mt-3 leading-7 text-gray-300">
-                All donations are processed securely through Razorpay using
-                encrypted payment technology.
-              </p>
-            </div>
           </div>
-        </div>
 
-        {/* Right */}
+        </section>
 
-        <DonationForm defaultAmount={amount} />
+        {/* Main Section */}
+
+        <section className="px-6 pb-24">
+
+          <div
+            className="
+              mx-auto
+              grid
+              max-w-7xl
+              gap-20
+              lg:grid-cols-[1fr_480px]
+            "
+          >
+
+            {/* LEFT */}
+
+            <div>
+
+              <DonationCauses />
+
+              <ImpactStats />
+
+              <TrustSection />
+
+              <DonationQuote />
+
+              <WhyDonate />
+
+            </div>
+
+            {/* RIGHT */}
+
+            <div className="lg:sticky lg:top-28 lg:self-start">
+
+              <DonationForm
+                formData={formData}
+                setFormData={setFormData}
+                selectedAmount={selectedAmount}
+                setSelectedAmount={setSelectedAmount}
+              />
+
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* FAQ */}
+
+        <section className="px-6 pb-28">
+
+          <div className="mx-auto max-w-7xl">
+
+            <DonationFAQ />
+
+          </div>
+
+        </section>
+
       </div>
+
     </div>
   );
 };
