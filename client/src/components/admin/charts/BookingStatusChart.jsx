@@ -6,6 +6,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+import { Loader2 } from "lucide-react";
+
 const COLORS = [
   "#EAB308",
   "#22C55E",
@@ -13,6 +15,27 @@ const COLORS = [
 ];
 
 const BookingStatusChart = ({ stats }) => {
+
+  if (!stats) {
+    return (
+      <div className="rounded-2xl border border-slate-700 bg-[#111827] p-6">
+        <h2 className="mb-6 text-xl font-bold">
+          Booking Status
+        </h2>
+
+        <div className="flex h-[280px] items-center justify-center">
+          <div className="flex items-center gap-3 text-slate-300">
+            <Loader2
+              size={22}
+              className="animate-spin"
+            />
+            Loading chart...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const data = [
     {
       name: "Pending",
@@ -51,9 +74,7 @@ const BookingStatusChart = ({ stats }) => {
             {data.map((entry, index) => (
               <Cell
                 key={index}
-                fill={
-                  COLORS[index]
-                }
+                fill={COLORS[index]}
               />
             ))}
           </Pie>

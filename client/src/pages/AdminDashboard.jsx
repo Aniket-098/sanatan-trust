@@ -17,7 +17,14 @@ import {
 } from "lucide-react";
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState({
+  pending: 0,
+  approved: 0,
+  rejected: 0,
+  totalBookings: 0,
+  totalDonationAmount: 0,
+  todayDonationAmount: 0,
+});
 
   const [recentBookings, setRecentBookings] = useState([]);
 
