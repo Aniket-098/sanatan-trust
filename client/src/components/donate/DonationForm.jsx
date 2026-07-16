@@ -13,6 +13,8 @@ const DonationForm = ({
   setFormData,
   selectedAmount,
   setSelectedAmount,
+  donationSettings,
+  loadingSettings,
 }) => {
   const navigate = useNavigate();
 
@@ -329,7 +331,11 @@ const DonationForm = ({
 
       {/* Donate Button */}
 
-      <PaymentMethods onDonate={handleDonate} />
+      <PaymentMethods
+        onDonate={handleDonate}
+        donationSettings={donationSettings}
+        loadingSettings={loadingSettings}
+      />
 
       <p className="mt-5 text-center text-sm text-gray-400">
         🔒 Secured by Razorpay

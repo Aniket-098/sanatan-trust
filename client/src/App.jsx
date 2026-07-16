@@ -12,6 +12,7 @@ import AdminBookings from "./pages/AdminBookings";
 import Donate from "./pages/Donate";
 import DonationSuccess from "./components/donate/DonationSuccess";
 import DonationsManagement from "./components/admin/DonationsManagement";
+import Settings from "./pages/Settings";
 
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 function App() {
@@ -86,6 +87,15 @@ function App() {
         element={
           <ProtectedRoute>
             <DonationsManagement />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
           </ProtectedRoute>
         }
       />

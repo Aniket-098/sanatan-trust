@@ -4,13 +4,16 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 
-
+import settingsRoutes from "./routes/settingsRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import adminBookingRoutes from "./routes/adminBookingRoutes.js";
 import donationRoutes from "./routes/donationRoutes.js";
 import adminDonationRoutes from "./routes/adminDonationRoutes.js";
+import publicSettingsRoutes from "./routes/publicSettingsRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -56,6 +59,27 @@ app.use(
   "/api/v1/admin/donations",
   adminDonationRoutes
 );
+
+app.use(
+  "/api/v1/admin/notifications",
+  notificationRoutes
+);
+
+app.use(
+  "/api/v1/admin/settings",
+  settingsRoutes
+);
+
+app.use(
+  "/api/v1/settings",
+  publicSettingsRoutes
+);
+
+app.use(
+  "/api/v1/admin/upload",
+  uploadRoutes
+);
+
 
 /* -------------------- Server -------------------- */
 

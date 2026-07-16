@@ -18,13 +18,19 @@ import toast from "react-hot-toast";
 
 import paymentConfig from "../../constants/paymentConfig";
 
-const UPICard = () => {
+const UPICard = ({upiId, qrCode}) => {
   const [copied, setCopied] = useState(false);
+
+  const finalUpiId =
+  upiId || paymentConfig.upi.id;
+
+  const finalQrCode =
+  qrCode || paymentConfig.upi.qr;
 
   const copyUPI = async () => {
     try {
       await navigator.clipboard.writeText(
-        paymentConfig.upi.id
+        finalUpiId
       );
 
       setCopied(true);
@@ -111,9 +117,9 @@ const UPICard = () => {
 
         <div className="mt-8 flex justify-center">
 
-          {paymentConfig.upi.qr ? (
+          {finalQrCode  ? (
             <img
-              src={paymentConfig.upi.qr}
+              src={finalQrCode}
               alt="UPI QR"
               className="
                 w-64
@@ -169,7 +175,7 @@ const UPICard = () => {
             "
           >
             <span className="font-medium text-yellow-400">
-              {paymentConfig.upi.id}
+              {finalUpiId}
             </span>
 
             <button

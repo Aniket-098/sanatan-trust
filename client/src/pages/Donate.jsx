@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import DonationHero from "../components/donate/DonationHero";
@@ -10,6 +10,8 @@ import DonationFAQ from "../components/donate/DonationFAQ";
 import DonationForm from "../components/donate/DonationForm";
 import WhyDonate from "../components/donate/WhyDonate";
 
+import { getPublicSettings } from "../api/settingsApi";
+
 const Donate = () => {
   const [searchParams] = useSearchParams();
 
@@ -17,12 +19,32 @@ const Donate = () => {
 
   const [selectedAmount, setSelectedAmount] = useState(amount);
 
+  const [settings, setSettings] = useState(null);
+
+  const [loadingSettings, setLoadingSettings] = useState(true);
+
   const [formData, setFormData] = useState({
     donorName: "",
     email: "",
     phone: "",
     purpose: "",
   });
+
+  useEffect(() => {
+  const fetchSettings = async () => {
+    try {
+      const data = await getPublicSettings();
+
+      setSettings(data);
+    } catch (error) {
+      console.error("Failed to load public settings:", error);
+    } finally {
+      setLoadingSettings(false);
+    }
+  };
+
+  fetchSettings();
+}, []);
 
   return (
     <div
@@ -104,6 +126,8 @@ const Donate = () => {
                 setFormData={setFormData}
                 selectedAmount={selectedAmount}
                 setSelectedAmount={setSelectedAmount}
+                donationSettings={settings?.donation}
+                loadingSettings={loadingSettings}
               />
 
             </div>

@@ -17,7 +17,7 @@ const AdminLayout = ({ children, topbarActions, }) => {
           setSidebarOpen={setSidebarOpen}
         />
 
-        <div className="flex-1">
+        <div className="flex-1 lg:ml-72">
 
           <Topbar
             setSidebarOpen={setSidebarOpen}

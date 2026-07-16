@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
 import { loginAdmin } from "../api/adminApi";
-import { isAuthenticated } from "../components/utils/auth";
+import { isAuthenticated, setToken } from "../components/utils/auth";
 const AdminLogin = () => {
   const navigate = useNavigate();
 
@@ -39,7 +39,13 @@ const AdminLogin = () => {
 
       const { data } = await loginAdmin(form);
 
-      localStorage.setItem("token", data.token);
+      setToken(data.token)
+
+      // Store current login time
+      localStorage.setItem(
+        "lastLogin", 
+        new Date().toISOString()
+      );
 
       navigate("/admin/dashboard");
     } catch (err) {

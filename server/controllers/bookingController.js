@@ -2,6 +2,7 @@ import Booking from "../models/Booking.js";
 import ExcelJS from "exceljs";
 import sendEmail from "../utils/sendEmail.js";
 import { bookingEmail } from "../utils/emailTemplates.js";
+import createNotification from "../utils/createNotification.js";
 
 export const createBooking = async (req, res) => {
   try {
@@ -50,7 +51,15 @@ export const createBooking = async (req, res) => {
         console.error("Email Error:", error.message);
       }
     }
+    await createNotification({
+      type: "booking",
 
+      title: "New Booking",
+
+      message: `${booking.fullName} booked ${booking.kathaType}`,
+
+      link: "/admin/bookings",
+    });
     res.status(201).json({
       success: true,
       message: "Booking submitted successfully.",
